@@ -122,9 +122,9 @@ const SubmitCaseForm: React.FC = () => {
                 control={form.control}
                 name="speciality"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem dir="rtl">
                     <FormLabel>التخصص</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select dir="rtl" onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className="text-right">
                           <SelectValue placeholder="اختر التخصص المناسب" />

@@ -7,7 +7,6 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ApiProvider } from "@/contexts/ApiContext";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
-// Pages
 import SubmitCasePage from "./pages/SubmitCasePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -16,10 +15,12 @@ import CaseDetailPage from "./pages/CaseDetailPage";
 import ReferencesPage from "./pages/ReferencesPage";
 import AdminConsultantsPage from "./pages/AdminConsultantsPage";
 import NotFound from "./pages/NotFound";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient();
 
 const App = () => (
+
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>

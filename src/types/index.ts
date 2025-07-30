@@ -60,7 +60,7 @@ export interface RegisterRequest {
   email: string;
   password: string;
   speciality: string;
-  doctorId: string;
+  //doctorId: string;
 }
 
 export interface LoginRequest {
@@ -70,21 +70,12 @@ export interface LoginRequest {
 
 export interface ReviewSubmissionRequest {
   caseId: string;
-  selectedSuggestionId?: string;
-  customSuggestion?: string;
+  solution: string;
 }
 
 // Specialities enum
 export const SPECIALITIES = [
-  'Technical',
-  'Medical',
-  'Legal',
-  'Financial',
-  'Engineering',
-  'Business',
-  'Education',
-  'Psychology',
-  'Info'
+  'طبي'
 ] as const;
 
 export type Speciality = typeof SPECIALITIES[number];

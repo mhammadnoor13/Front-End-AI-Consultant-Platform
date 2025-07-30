@@ -67,7 +67,7 @@ const RegisterForm: React.FC = () => {
       email: data.email,
       password: data.password,
       speciality: data.speciality,
-      doctorId: data.doctorId,
+      //doctorId: data.doctorId,
     };
 
     const success = await register(registerData);
@@ -154,15 +154,15 @@ const RegisterForm: React.FC = () => {
                 control={form.control}
                 name="speciality"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem dir="rtl">
                     <FormLabel>التخصص</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
+                      <FormControl dir="rtl">
                         <SelectTrigger className="text-right">
                           <SelectValue placeholder="اختر تخصصك" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
+                      <SelectContent dir="rtl">
                         {SPECIALITIES.map((speciality) => (
                           <SelectItem key={speciality} value={speciality}>
                             {speciality}

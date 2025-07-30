@@ -47,16 +47,16 @@ export const ApiProvider: React.FC<ApiProviderProps> = ({ children }) => {
   const submitCase = async (caseData: SubmitCaseRequest): Promise<boolean> => {
     try {
       // TODO: Call API to submit case
-      // const response = await fetch('/api/cases', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(caseData),
-      // });
+      const response = await fetch('http://localhost:5100/cases', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(caseData),
+      });
       
-      // Mock success for development
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // // Mock success for development
+      // await new Promise(resolve => setTimeout(resolve, 1000));
       
       toast({
         title: 'تم إرسال الحالة بنجاح',
@@ -77,13 +77,21 @@ export const ApiProvider: React.FC<ApiProviderProps> = ({ children }) => {
   const getCases = async (): Promise<Case[]> => {
     try {
       // TODO: Call API to get cases
-      // const response = await fetch('/api/cases', {
-      //   headers: {
-      //     ...getAuthHeaders(),
-      //   },
-      // });
-      // return await response.json();
-      
+      const response = await fetch('http://localhost:5100/consultants/assigned-cases', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAuthHeaders(),
+        },
+      });
+
+
+      if (!response.ok) {
+        throw new Error(`Server returned ${response.status}`);
+      }
+
+      const data = (await response.json()) as Case[];
+      return data;  
       // Mock data for development
       const mockCases: Case[] = [
         {
@@ -120,37 +128,15 @@ export const ApiProvider: React.FC<ApiProviderProps> = ({ children }) => {
   const getCaseDetail = async (caseId: string): Promise<CaseDetail | null> => {
     try {
       // TODO: Call API to get case detail
-      // const response = await fetch(`/api/cases/${caseId}`, {
-      //   headers: {
-      //     ...getAuthHeaders(),
-      //   },
-      // });
-      // return await response.json();
+      const response = await fetch(`http://localhost:5100/cases/${caseId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAuthHeaders(),
+        },
+      });
+      console.log(response);
+      return (await response.json()) as CaseDetail;
       
-      // Mock data for development
-      const mockCaseDetail: CaseDetail = {
-        id: caseId,
-        title: 'مشاكل في الكتف الأيسر',
-        description: 'أعاني من آلام في منطقة الكتف الأيسر مع تيبس وأصوات فرقعة، خاصة عند الجلوس بطرق معينة. يبدو أن العظام تتحرك من مكانها والأمر محرج للغاية...',
-        status: 'ReadyToReview',
-        createdAt: '2025-07-12T20:42:17.559Z',
-        suggestions: [
-          {
-            id: 'sugg1',
-            text: 'يُنصح بزيارة طبيب العظام لفحص شامل'
-          },
-          {
-            id: 'sugg2',
-            text: 'ممارسة تمارين الإطالة للكتف والرقبة'
-          },
-          {
-            id: 'sugg3',
-            text: 'تطبيق كمادات دافئة على المنطقة المصابة'
-          }
-        ]
-      };
-      
-      return mockCaseDetail;
     } catch (error) {
       toast({
         title: 'خطأ في تحميل تفاصيل الحالة',
@@ -164,14 +150,14 @@ export const ApiProvider: React.FC<ApiProviderProps> = ({ children }) => {
   const submitReview = async (reviewData: ReviewSubmissionRequest): Promise<boolean> => {
     try {
       // TODO: Call API to submit review
-      // const response = await fetch('/api/reviews', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     ...getAuthHeaders(),
-      //   },
-      //   body: JSON.stringify(reviewData),
-      // });
+      const response = await fetch(`http://localhost:5100/cases/${reviewData.caseId}/add-solution`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAuthHeaders(),
+        },
+        body: JSON.stringify(reviewData.solution),
+      });
       
       await new Promise(resolve => setTimeout(resolve, 1000));
       
@@ -193,18 +179,17 @@ export const ApiProvider: React.FC<ApiProviderProps> = ({ children }) => {
 
   const uploadReference = async (file: File): Promise<boolean> => {
     try {
-      // TODO: Call API to upload file
-      // const formData = new FormData();
-      // formData.append('file', file);
-      // const response = await fetch('/api/references', {
-      //   method: 'POST',
-      //   headers: {
-      //     ...getAuthHeaders(),
-      //   },
-      //   body: formData,
-      // });
+      const formData = new FormData();
+      formData.append('file', file);
+      const response = await fetch('http://localhost:5100/embedding/pdf', {
+        method: 'POST',
+        headers: {
+          ...getAuthHeaders(),
+        },
+        body: formData,
+      });
       
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000000));
       
       toast({
         title: 'تم رفع الملف بنجاح',

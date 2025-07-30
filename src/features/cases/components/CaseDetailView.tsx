@@ -92,11 +92,16 @@ const CaseDetailView: React.FC = () => {
     setIsSubmitting(true);
     setShowConfirmDialog(false);
 
-    const formData = form.getValues();
+    const { reviewType, customSuggestion } = form.getValues();
+
+    const solution =
+      reviewType === 'custom'
+        ? customSuggestion!
+        : caseDetail.suggestions.find(s => s.id === reviewType)?.text ?? '';
+
     const reviewData: ReviewSubmissionRequest = {
       caseId,
-      selectedSuggestionId: formData.reviewType !== 'custom' ? formData.reviewType : undefined,
-      customSuggestion: formData.reviewType === 'custom' ? formData.customSuggestion : undefined,
+      solution
     };
 
     // TODO: Call API to submit review
@@ -184,12 +189,12 @@ const CaseDetailView: React.FC = () => {
       {/* Suggestions */}
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>اقتراحات الذكي الاصطناعي</CardTitle>
+          <CardTitle>اقتراحات الذكاء الاصطناعي</CardTitle>
           <p className="text-sm text-muted-foreground">
             اختر أحد الاقتراحات التالية أو اكتب اقتراحك المخصص
           </p>
         </CardHeader>
-        <CardContent>
+        <CardContent >
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmitReview)} className="space-y-4">
               <FormField
@@ -198,13 +203,13 @@ const CaseDetailView: React.FC = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <RadioGroup
+                      <RadioGroup dir="rtl"
                         value={field.value}
                         onValueChange={field.onChange}
                         className="space-y-3"
                       >
                         {caseDetail.suggestions.map((suggestion) => (
-                          <div key={suggestion.id} className="flex items-start space-x-reverse space-x-2">
+                          <div key={suggestion.id} className="flex items-start space-x-reverse space-x-2 ">
                             <RadioGroupItem value={suggestion.id} id={suggestion.id} />
                             <Label 
                               htmlFor={suggestion.id} 

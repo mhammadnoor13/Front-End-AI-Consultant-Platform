@@ -50,7 +50,7 @@ const CaseCard: React.FC<CaseCardProps> = ({ caseData }) => {
   const daysWaiting = getDaysWaiting(caseData.createdAt);
 
   return (
-    <Card className="hover:shadow-md transition-shadow duration-200">
+    <Card className="flex flex-col h-full hover:shadow-md transition-shadow duration-200">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <h3 className="text-lg font-semibold text-card-foreground line-clamp-2">
@@ -75,31 +75,35 @@ const CaseCard: React.FC<CaseCardProps> = ({ caseData }) => {
         </div>
       </CardHeader>
       
-      <CardContent className="space-y-4">
-        <p className="text-muted-foreground text-sm line-clamp-3">
-          {caseData.description}
-        </p>
-        
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1 text-xs">
-            <Clock className="h-3 w-3" />
-            <span className={`${getWaitingTimeColor(daysWaiting)}`}>
-              منذ {daysWaiting} {daysWaiting === 1 ? 'يوم' : 'أيام'}
-            </span>
-          </div>
-          
-          <Badge variant="secondary" className="text-xs">
-            {caseData.speciality}
-          </Badge>
-        </div>
-        
-        <Button asChild className="w-full" size="sm">
-          <Link to={`/cases/${caseData.id}`} className="flex items-center gap-2">
-            <Eye className="h-4 w-4" />
-            مراجعة الحالة
-          </Link>
-        </Button>
-      </CardContent>
+<CardContent className="flex flex-col h-full gap-y-1">
+    {/* 1. Description */}
+    <p className="basis-1/2 flex-none overflow-hidden text-muted-foreground text-sm line-clamp-3">
+      {caseData.description}
+    </p>
+
+    {/* 2. Meta row (date + speciality) */}
+    <div className="basis-[15%] flex-none flex items-center justify-between text-xs">
+      <div className="flex items-center gap-1">
+        <Clock className="h-3 w-3" />
+        <span className={getWaitingTimeColor(daysWaiting)}>
+          منذ {daysWaiting} {daysWaiting === 1 ? 'يوم' : 'أيام'}
+        </span>
+      </div>
+      <Badge variant="secondary" className="text-xs">
+        {caseData.speciality}
+      </Badge>
+    </div>
+
+    {/* 3. Button */}
+    <div className="basis-[35%] flex-none flex items-end mt-2 pb-2">
+      <Button asChild className="w-full" size="sm">
+        <Link to={`/cases/${caseData.id}`} className="flex items-center justify-center gap-2">
+          <Eye className="h-4 w-4" />
+          مراجعة الحالة
+        </Link>
+      </Button>
+    </div>
+  </CardContent>
     </Card>
   );
 };

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, LoginRequest, RegisterRequest } from '@/types';
 import { toast } from '@/hooks/use-toast';
+import apiService from '@/services/apiService';
 
 interface AuthContextType {
   user: User | null;
@@ -20,6 +21,16 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
+};
+
+const mockUser: User = {
+  id: '1',
+  firstName: 'أحمد',
+  lastName: 'محمد',
+  email: 'mhammadnoor13@gmail.com',
+  speciality: 'Technical',
+  role: 'consultant',
+  verified: true
 };
 
 interface AuthProviderProps {
@@ -67,12 +78,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(true);
     try {
       // TODO: Call login API
-      // const response = await apiService.login(credentials);
-      // localStorage.setItem('jwt', response.token);
+      const response = await apiService.login(credentials);
+      localStorage.setItem('jwt', response['accessToken']);
+
+      console.log(response)
       // setUser(response.user);
       
       // Mock login for development
-      localStorage.setItem('jwt', 'mock-jwt-token');
+      //localStorage.setItem('jwt', 'mock-jwt-token');
       const mockUser: User = {
         id: '1',
         firstName: 'أحمد',
@@ -106,9 +119,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(true);
     try {
       // TODO: Call register API
-      // const response = await apiService.register(userData);
-      // localStorage.setItem('jwt', response.token);
-      // setUser(response.user);
+      const response = await apiService.register(userData);
+      localStorage.setItem('jwt', response.token);
+      setUser(mockUser);
       
       toast({
         title: 'تم التسجيل بنجاح',
